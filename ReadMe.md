@@ -1,12 +1,13 @@
 <a name="readme-top"></a>
 # Learning MPMedia
+
 <p align="right">(<a href="#readme-overview">Đọc tổng kết</a>)</p>
 
 Về cơ bản thì thư viện này giúp ta lâý được URL bài hát trong Apple Music, sau khi có URL của các bài hát, ta có thể play nhạc, next nhạc,... Chú ý rằng, ta chỉ có thể lấy URL của bài hát trong Apple Music, chứ không thể explore ra data trong FileManager. Hmm nhưng cũng đ hiểu sao, khi merge video với audio thì merge được.
 
 Sau đây là các bước để có thể lấy được URL của các bài hát từ Apple Music.
 
-<a name="#readme-B1"></a>
+<a name="readme-B1"></a>
 
 ## I. Music Library Authorization
 
@@ -194,7 +195,7 @@ public enum MPMediaGrouping : Int, @unchecked Sendable {
 
 Tóm lại: Ta có 2 cách để query tất cả media trong albums.
 
-<a name="#readme-CollectionMedia"></a>
+<a name="readme-CollectionMedia"></a>
 
 ```php
 // `Collections` sẽ được group theo từng album
@@ -206,7 +207,7 @@ let query: MPMediaQuery = MPMediaQuery()
 query.groupingType = .album
 ```
 
-<a name="#readme-overview"></a>
+<a name="readme-overview"></a>
 
 ## 4. Tổng kết
 
