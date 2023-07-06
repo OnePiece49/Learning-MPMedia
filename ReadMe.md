@@ -1,12 +1,11 @@
 <a name="readme-top"></a>
 # Learning MPMedia
-<p align="right">(<a href="#overview">Đọc tổng kết</a>)</p>
+<p align="right">(<a href="#readme-overview">Đọc tổng kết</a>)</p>
 
 Về cơ bản thì thư viện này giúp ta lâý được URL bài hát trong Apple Music, sau khi có URL của các bài hát, ta có thể play nhạc, next nhạc,... Chú ý rằng, ta chỉ có thể lấy URL của bài hát trong Apple Music, chứ không thể explore ra data trong FileManager. Hmm nhưng cũng đ hiểu sao, khi merge video với audio thì merge được.
 
 Sau đây là các bước để có thể lấy được URL của các bài hát từ Apple Music.
-
-<a name="#B1"></a>.
+<a name="#readme-B1"></a>
 
 ## I. Music Library Authorization
 
@@ -49,13 +48,13 @@ DispatchQueue.main.async {
 ```
 Đoạn code này sẽ mở setting của user lên luôn.
 
-<a name="#B2"></a>.
+<a name="readme-B2"></a>
 
 ## 2. Exploring the Music Library
 
 Sau khi đã request Authorzation, ta sẽ tiến hành get song(bài hát), và từ song đó, ta sẽ lấy các Propeties của song đó như name, artist....
 
-Mọi thứ trong music'library, được gọi là `MPMediaEntity` trong code. Nó có 2 subclasses quan trọng sau:
+Mọi thứ trong music'library, được gọi là `MPMediaEntity` trong code. `MPMediaEntity` có 2 subclasses quan trọng sau:
 - `MPMediaItem:` Đại diện cho 1 song
 - `MPMediaItemCollection:`  Đại diện cho 1 list mã đã được sắp xếp của các `MPMediaItem`. Nó có thuộc tính `items` sẽ chứa 1 array các `MPMediaItem`.
 
@@ -74,8 +73,7 @@ let mediaItem = MPMediaItem()
 mediaItem.value(forProperty: MPMediaItemPropertyArtist)  ///Cách 1
 mediaItem.artist                                        /// Cách 2
 ```
-
-<a name="#B3"></a>.
+<a name="readme-B3"></a>
 
 ## 3. Querying the Music Library
 
@@ -102,6 +100,7 @@ print("DEBUG: \(query.items[0].artist)") /// "YOASOBI"
 func addFilterPredicate(_ predicate: MPMediaPredicate)
 func removeFilterPredicate(_ predicate: MPMediaPredicate)
 ```
+
 Ta có `MPMediaPropertyPredicate` là 1 subclass của `MPMediaPredicate`, nó cho phép ta tạo 1 predicate để thêm điều kiện khi query 1 media.
 
 ```php
@@ -194,7 +193,7 @@ public enum MPMediaGrouping : Int, @unchecked Sendable {
 
 Tóm lại: Ta có 2 cách để query tất cả media trong albums.
 
-<a name="#overview"></a>
+<a name="#readme-CollectionMedia"></a>
 
 ```php
 // `Collections` sẽ được group theo từng album
@@ -206,19 +205,20 @@ let query: MPMediaQuery = MPMediaQuery()
 query.groupingType = .album
 ```
 
-<a name="#CollectionMedia"></a>.
+<a name="#readme-CollectionMedia"></a>
 
+<a name="#readme-overview"></a>
 ## 4. Tổng kết
 
 Các bước thực thi
-- B1: Request Authorzation: <p align="right">(<a href="#B1">Đọc tổng kết</a>)</p>
-- B2: Query data: <p align="right">(<a href="#B3">Đọc tổng kết</a>)</p>
+- B1: Request Authorzation: <p align="right">(<a href="#readme-B1">Get Authorization</a>)</p>
+- B2: Query data: <p align="right">(<a href="#readme-B3">Query and Get Media</a>)</p>
 
-Ta sẽ lấy được toàn bộ media từ music library chỉ thông qua việc khởi tạo: `let query: MPMediaQuery = MPMediaQuery()`. Sau đó ta có thể lấy các `media` thông qua property `items` của query.
+Ta sẽ lấy được toàn bộ media từ music library chỉ thông qua việc khởi tạo: `let query: MPMediaQuery = MPMediaQuery()`. Sau đó ta có thể lấy các `media` thông qua property `items` của query. Đơn giản thê thôi :))))
 
 Ta cũng có thể thêm điều kiện qua query bằng cách sử dụng `MPMediaPropertyPredicate`.
 
 Chúng ta cũng có thể query theo collections, như albums, artists, podcast,.. thông qua việc sử dụng `let albumsQuery: MPMediaQuery = MPMediaQuery.albums()` hoặc `let query: MPMediaQuery = MPMediaQuery(); query.groupingType = .album` 
-<p align="right">(<a href="#CollectionMedia">Get Collection Medias</a>)</p>
+<p align="right">(<a href="#readme-CollectionMedia">Get Collection Media</a>)</p>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
