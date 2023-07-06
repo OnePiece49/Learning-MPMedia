@@ -52,7 +52,7 @@ class ViewController: UIViewController {
     
     func queryData() {
         let query = MPMediaQuery()
-        query.items
+        let data = query.items
     }
     
     //MARK: - Selectors
