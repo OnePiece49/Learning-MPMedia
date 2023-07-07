@@ -4,6 +4,7 @@
 Bài viết này gồm 2 phần: 
 - Request Media from music's library: Nội dung chính là làm thế nào lấy được các media item, sau đó truy vấn đến các thuộc tính url, artist,... của đối tượng item đó.
 - Play music in background and Mini Player Controller: Nội dung chính là làm thế nào có thể phát nhạc khi app ở background và khi vào màn lock screen sẽ có mini player như những app music.
+<p align="right">(<a href="#readme-phan2">Phần 2</a>)</p>
 
 <p align="right">(<a href="#readme-overview">Đọc tổng kết Phần 1</a>)</p>
 
@@ -246,6 +247,7 @@ Chúng ta cũng có thể query theo collections, như albums, artists, podcast,
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<a name="readme-phan2"></a>
 # II. Play music in background and Mini Player Controller
 
 ## 2.1 Play music in background
