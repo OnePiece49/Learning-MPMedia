@@ -63,6 +63,7 @@ class ViewController: UIViewController {
         
         player = AVPlayer(playerItem: playerItem)
         player.play()
+        player.rate = 2
     }
     
     func setupRomoteCommander() {
@@ -101,17 +102,48 @@ class ViewController: UIViewController {
         playingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: CGSize(width: 40, height: 40), requestHandler: { size in
             return UIImage(named: "bp")!
         })
+        playingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = CMTimeGetSeconds(player.currentTime())
+        playingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 2
         
         MPNowPlayingInfoCenter.default().nowPlayingInfo = playingInfo
         
     }
     
     func playMedia() {
-        player.play()
+        player.playImmediately(atRate: 1.5)
+
+        guard let item = MPMediaQuery().items?.first else {return}
+        var playingInfo = [String: Any]()
+        playingInfo[MPMediaItemPropertyArtist] = item.title
+        playingInfo[MPMediaItemPropertyArtist] = item.artist
+        playingInfo[MPMediaItemPropertyAlbumTitle] = item.albumTitle
+        playingInfo[MPMediaItemPropertyPlaybackDuration] = item.playbackDuration
+
+        playingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: CGSize(width: 40, height: 40), requestHandler: { size in
+            return UIImage(named: "bp")!
+        })
+        playingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = CMTimeGetSeconds(player.currentTime())
+        playingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 2
+
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = playingInfo
     }
     
     func pauseMedia() {
         player.pause()
+        guard let item = MPMediaQuery().items?.first else {return}
+        var playingInfo = [String: Any]()
+        playingInfo[MPMediaItemPropertyArtist] = item.title
+        playingInfo[MPMediaItemPropertyArtist] = item.artist
+        playingInfo[MPMediaItemPropertyAlbumTitle] = item.albumTitle
+        playingInfo[MPMediaItemPropertyPlaybackDuration] = item.playbackDuration
+
+        playingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: CGSize(width: 40, height: 40), requestHandler: { size in
+            return UIImage(named: "bp")!
+        })
+        playingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = CMTimeGetSeconds(player.currentTime())
+        playingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 0
+
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = playingInfo
     }
     
     func nextMedia() {

@@ -312,7 +312,7 @@ func setupRomoteCommander() {
 }
 
 func playMedia() {
-    player.play()
+    player.playImmediately(atRate: 2)
 }
 
 func pauseMedia() {
@@ -327,7 +327,7 @@ func pauseMedia() {
 - previousTrackCommand
 - ....
 
-Hiện tại ta đã nhận được các event, giờ ta sẽ custom `Mini Player` như xét name media, artist, image,... 
+Hiện tại ta đã nhận được các event, giờ ta sẽ custom `View VewMini Player` như xét name media, artist, image,... 
 
 ```php
 func setupRemoteComanderView() {
@@ -349,5 +349,71 @@ func setupRemoteComanderView() {
 
 ![](Images/view_miniPlayer.jpg)
 
-Nhưng vẫn có 1 vấn đề nữa, là khi tăng tốc độ `rate` lên 2, 0.5,.. thì thanh slider của `Mini Player` vẫn tốc độ như thế, vì vậy ta phải config chúng.
 
+- Regarding Seek Bar
+
+Nhưng vẫn có 1 vấn đề nữa, là khi tăng tốc độ `rate` lên 2, 0.5,.. thì thanh slider của `Mini Player` vẫn tốc độ như thế, vì vậy ta phải config chúng. Và có vài vài điều nữa ta cần biết:
+- Thời gian thanh seek bar với current time trong bài hát ko lúc nào sẽ sync với nhau.
+- Khi media được seek tới 1 thời gian nào đó, thì seek bar ở `UI notification view` không được update theo
+
+Để giải quyết vấn đề này, chúng ta cần update một vài attributes.
+
+```php
+playingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = CMTimeGetSeconds(player.currentTime())
+playingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1
+```
+
+Trong trường hợp pause media, ta sẽ xét thuộc tính `playingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 0` thì để seek time của `notification view` không tăng nữa. (Bình thường khi không xét lại thuộc tính này, ta thấy khi nhấn thì `seek time` trên `notification view` không tăng nữa, nma khi nhấn *play* lại, thì nó sẽ hiển thị lại sai, vì lúc đấy seek bar vẫn tăng ngầm.)
+
+Trong trường hợp play lại media, ta sẽ xét thuộc tính `playingInfo[MPNowPlayingInfoPropertyPlaybackRate] = rateMongMuon`, thì để seek time của `notification view` sẽ tăng bằng chính `rateMongMuon` đó. Khi nào ta sẽ rate bằng 2 như `player.rate = 2` thì ta cần update `playingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 2`.
+
+Với `playingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = CMTimeGetSeconds(player.currentTime())` sẽ làm cho time seekBar luôn sync với current time ở media.
+
+VD:
+
+```php
+func playMedia() {
+        player.playImmediately(atRate: 1.5)
+
+        guard let item = MPMediaQuery().items?.first else {return}
+        var playingInfo = [String: Any]()
+        playingInfo[MPMediaItemPropertyArtist] = item.title
+        playingInfo[MPMediaItemPropertyArtist] = item.artist
+        playingInfo[MPMediaItemPropertyAlbumTitle] = item.albumTitle
+        playingInfo[MPMediaItemPropertyPlaybackDuration] = item.playbackDuration
+
+        playingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: CGSize(width: 40, height: 40), requestHandler: { size in
+            return UIImage(named: "bp")!
+        })
+        playingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = CMTimeGetSeconds(player.currentTime())
+        playingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 2
+
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = playingInfo
+    }
+    
+    func pauseMedia() {
+        player.pause()
+        guard let item = MPMediaQuery().items?.first else {return}
+        var playingInfo = [String: Any]()
+        playingInfo[MPMediaItemPropertyArtist] = item.title
+        playingInfo[MPMediaItemPropertyArtist] = item.artist
+        playingInfo[MPMediaItemPropertyAlbumTitle] = item.albumTitle
+        playingInfo[MPMediaItemPropertyPlaybackDuration] = item.playbackDuration
+
+        playingInfo[MPMediaItemPropertyArtwork] = MPMediaItemArtwork(boundsSize: CGSize(width: 40, height: 40), requestHandler: { size in
+            return UIImage(named: "bp")!
+        })
+        playingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = CMTimeGetSeconds(player.currentTime())
+        playingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 0
+
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = playingInfo
+    }
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+# III. Reference
+
+1. [Showing Media Player System Controls on Notification Screen in iOS (Swift)](https://medium.com/@varundudeja/showing-media-player-system-controls-on-notification-screen-in-ios-swift-4e27fbf73575)
+
+2. [Background Audio Player Sync Control Center](https://medium.com/@quangtqag/background-audio-player-sync-control-center-516243c2cdd1)
