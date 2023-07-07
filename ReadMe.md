@@ -23,7 +23,7 @@ Sau đây là các bước để có thể lấy được URL của các bài h�
 
 Sau khi add xong, ta sẽ gửi hàm request:
 
-```php
+```swift
 func requestAuthorzation() {
     MPMediaLibrary.requestAuthorization { status in
         switch status {
@@ -49,7 +49,7 @@ func requestAuthorzation() {
 
 Method `requestAuthorization()` sẽ được request trên background Thread, do đó sau khi request completion complete, ta phải update data trên main Thread.
 
-```php
+```swift
 DispatchQueue.main.async {
     let url = URL(string:UIApplication.openSettingsURLString)!
     UIApplication.shared.open(url)
@@ -68,7 +68,7 @@ Mọi thứ trong music'library, được gọi là `MPMediaEntity` trong code. 
 - `MPMediaItemCollection:`  Đại diện cho 1 list mã đã được sắp xếp của các `MPMediaItem`. Nó có thuộc tính `items` sẽ chứa 1 array các `MPMediaItem`.
 
 Để có thể fetch được các property của 1 instance `MPMediaItem`, ta có thể sử dụng KVC như sau:
-```php
+```swift
 // Fetch only one property at a time.
 func value(forProperty property: String) -> Any?
 
@@ -77,7 +77,7 @@ func enumerateValues(forProperties properties: Set<String>, using block: @escapi
 ```
 
 VD: Để có thể truy cập vào `title` property của `MediaItem` thì ta có 2 cách:
-```php
+```swift
 let mediaItem = MPMediaItem()
 mediaItem.value(forProperty: MPMediaItemPropertyArtist)  ///Cách 1
 mediaItem.artist                                        /// Cách 2
@@ -92,27 +92,27 @@ Có 2 cách để tạo 1 query
 
 - Cách 1:
 
-```php
+```swift
 let query: MPMediaQuery = MPMediaQuery()
 ```
 
 Khi khởi tạo 1 biến query như này, ta đã lấy được toàn bộ song từ Library, và đéo cần làm gì nữa cả :))) Ngạc nhiên chưa. giờ ta chỉ cần làm như sau là lấy được mọi Item, nghĩa là đã lấy được mọi bài hát.
 
-```php
+```swift
 let allsong: [MPMediaItem]? = query.items
 print("DEBUG: \(query.items[0].artist)") /// "YOASOBI"
 ```
 
 Để có thể thêm hoặc xoá điều kiện khi query, ta sử dụng
 
-```php
+```swift
 func addFilterPredicate(_ predicate: MPMediaPredicate)
 func removeFilterPredicate(_ predicate: MPMediaPredicate)
 ```
 
 Ta có `MPMediaPropertyPredicate` là 1 subclass của `MPMediaPredicate`, nó cho phép ta tạo 1 predicate để thêm điều kiện khi query 1 media.
 
-```php
+```swift
 class MPMediaPropertyPredicate : MPMediaPredicate {
 
     /*not inherited*/ init(value: Any?, forProperty property: String) // comparisonType is MPMediaPredicateComparisonEqualTo
@@ -136,7 +136,7 @@ enum MPMediaPredicateComparison : Int, @unchecked Sendable {
 
 Ví dụ:
 
-```php
+```swift
 let predicate: MPMediaPropertyPredicate = MPMediaPropertyPredicate(value: songId, forProperty: MPMediaItemPropertyPersistentID)
 let query: MPMediaQuery = MPMediaQuery()
 query.addFilterPredicate(predicate)
@@ -145,7 +145,7 @@ query.addFilterPredicate(predicate)
 - Cách 2: Sử dụng Convienence constructor
 
 `MPMediaQuery` cung cấp một vài methods dùng để khởi tạo query mà giới hạn group type:
-```php
+```swift
 open class func albums() -> MPMediaQuery
 
 open class func artists() -> MPMediaQuery
@@ -166,13 +166,13 @@ open class func genres() -> MPMediaQuery
 ```
 
 VD: Để có thể lấy các media trong folder album ra, ta có thể sử dụng:
-```php
+```swift
 let albumsQuery: MPMediaQuery = MPMediaQuery.albums()
 ```
 
 - Như đã nói ở trên, sau khi đã tạo query, chúng ta có thể lấy data từ query đó.
 
-```php
+```swift
 class MPMediaQuery {
     var items: [MPMediaItem]? { get }
     var collections: [MPMediaItemCollection]? { get }
@@ -187,7 +187,7 @@ Với:
 
 Với `MPMediaGrouping`:
 
-```php
+```swift
 public enum MPMediaGrouping : Int, @unchecked Sendable {
     case title = 0
     case album = 1
@@ -204,7 +204,7 @@ Tóm lại: Ta có 2 cách để query tất cả media trong albums.
 
 <a name="readme-CollectionMedia"></a>
 
-```php
+```swift
 // `Collections` sẽ được group theo từng album
 // Cách 1
 let albumsQuery: MPMediaQuery = MPMediaQuery.albums()
@@ -216,7 +216,7 @@ query.groupingType = .album
 
 Sau khi có item, để có thể play media, ta chỉ cần biến AVPlayer() như sau:
 
-```php
+```swift
 func playMedia() {
     let query = MPMediaQuery()
     let aidoru = query.items!.first!
@@ -264,7 +264,7 @@ Bước 1: Để có thể play media in background ta select `Audio, AirPlay, a
 
 Bước 2: Trong `AppDelegate.swift`, ta replace func `application(_:didFinishLaunchingWithOptions:)` ở func ở dưới đây:
 
-```php
+```swift
 import CoreAudio
 import AVFoundation
 
@@ -287,7 +287,7 @@ Sau 2 bước này, media của chúng ta sẽ tiếp tục được play kể c
 
 `MPRemoteCommandCenter` là 1 class cho phép ta tương tác với app music của mình. Bất cứ hành động như khi ta next , pause,... thì tất cả các sự kiện này sẽ được sử lý bởi **shared instance** của nó.
 
-```php
+```swift
 func setupRomoteCommander() {
     let commander = MPRemoteCommandCenter.shared()
     
@@ -331,7 +331,7 @@ func pauseMedia() {
 
 Hiện tại ta đã nhận được các event, giờ ta sẽ custom `View VewMini Player` như xét name media, artist, image,... 
 
-```php
+```swift
 func setupRemoteComanderView() {
     guard let item = MPMediaQuery().items?.first else {return}
     var playingInfo = [String: Any]()
@@ -360,7 +360,7 @@ Nhưng vẫn có 1 vấn đề nữa, là khi tăng tốc độ `rate` lên 2, 0
 
 Để giải quyết vấn đề này, chúng ta cần update một vài attributes.
 
-```php
+```swift
 playingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = CMTimeGetSeconds(player.currentTime())
 playingInfo[MPNowPlayingInfoPropertyPlaybackRate] = 1
 ```
@@ -373,7 +373,7 @@ Với `playingInfo[MPNowPlayingInfoPropertyElapsedPlaybackTime] = CMTimeGetSecon
 
 VD:
 
-```php
+```swift
 func playMedia() {
         player.playImmediately(atRate: 1.5)
 
