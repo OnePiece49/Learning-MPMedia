@@ -355,7 +355,7 @@ func setupRemoteComanderView() {
 - Regarding Seek Bar
 
 Nhưng vẫn có 1 vấn đề nữa, là khi tăng tốc độ `rate` lên 2, 0.5,.. thì thanh slider của `Mini Player` vẫn tốc độ như thế, vì vậy ta phải config chúng. Và có vài vài điều nữa ta cần biết:
-- Thời gian thanh seek bar với current time trong bài hát ko lúc nào sẽ sync với nhau.
+- Thời gian thanh seek bar với current time trong bài hát ko phải lúc nào cũng sync với nhau.
 - Khi media được seek tới 1 thời gian nào đó, thì seek bar ở `UI notification view` không được update theo
 
 Để giải quyết vấn đề này, chúng ta cần update một vài attributes.
