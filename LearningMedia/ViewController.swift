@@ -94,7 +94,7 @@ class ViewController: UIViewController {
     func setupRemoteComanderView() {
         guard let item = MPMediaQuery().items?.first else {return}
         var playingInfo = [String: Any]()
-        playingInfo[MPMediaItemPropertyArtist] = item.title
+        playingInfo[MPMediaItemPropertyTitle] = item.title
         playingInfo[MPMediaItemPropertyArtist] = item.artist
         playingInfo[MPMediaItemPropertyAlbumTitle] = item.albumTitle
         playingInfo[MPMediaItemPropertyPlaybackDuration] = item.playbackDuration
@@ -114,7 +114,7 @@ class ViewController: UIViewController {
 
         guard let item = MPMediaQuery().items?.first else {return}
         var playingInfo = [String: Any]()
-        playingInfo[MPMediaItemPropertyArtist] = item.title
+        playingInfo[MPMediaItemPropertyTitle] = item.title
         playingInfo[MPMediaItemPropertyArtist] = item.artist
         playingInfo[MPMediaItemPropertyAlbumTitle] = item.albumTitle
         playingInfo[MPMediaItemPropertyPlaybackDuration] = item.playbackDuration
@@ -132,7 +132,7 @@ class ViewController: UIViewController {
         player.pause()
         guard let item = MPMediaQuery().items?.first else {return}
         var playingInfo = [String: Any]()
-        playingInfo[MPMediaItemPropertyArtist] = item.title
+        playingInfo[MPMediaItemPropertyTitle] = item.title
         playingInfo[MPMediaItemPropertyArtist] = item.artist
         playingInfo[MPMediaItemPropertyAlbumTitle] = item.albumTitle
         playingInfo[MPMediaItemPropertyPlaybackDuration] = item.playbackDuration

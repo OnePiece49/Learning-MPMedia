@@ -335,7 +335,7 @@ Hiện tại ta đã nhận được các event, giờ ta sẽ custom `View VewM
 func setupRemoteComanderView() {
     guard let item = MPMediaQuery().items?.first else {return}
     var playingInfo = [String: Any]()
-    playingInfo[MPMediaItemPropertyArtist] = item.title
+    playingInfo[MPMediaItemPropertyTitle] = item.title
     playingInfo[MPMediaItemPropertyArtist] = item.artist
     playingInfo[MPMediaItemPropertyAlbumTitle] = item.albumTitle
     playingInfo[MPMediaItemPropertyPlaybackDuration] = item.playbackDuration
@@ -379,7 +379,7 @@ func playMedia() {
 
         guard let item = MPMediaQuery().items?.first else {return}
         var playingInfo = [String: Any]()
-        playingInfo[MPMediaItemPropertyArtist] = item.title
+        playingInfo[MPMediaItemPropertyTitle] = item.title
         playingInfo[MPMediaItemPropertyArtist] = item.artist
         playingInfo[MPMediaItemPropertyAlbumTitle] = item.albumTitle
         playingInfo[MPMediaItemPropertyPlaybackDuration] = item.playbackDuration
@@ -397,7 +397,7 @@ func playMedia() {
         player.pause()
         guard let item = MPMediaQuery().items?.first else {return}
         var playingInfo = [String: Any]()
-        playingInfo[MPMediaItemPropertyArtist] = item.title
+        playingInfo[MPMediaItemPropertyTitle] = item.title
         playingInfo[MPMediaItemPropertyArtist] = item.artist
         playingInfo[MPMediaItemPropertyAlbumTitle] = item.albumTitle
         playingInfo[MPMediaItemPropertyPlaybackDuration] = item.playbackDuration
